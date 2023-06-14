@@ -4,16 +4,23 @@ import { useState, useEffect } from "react";
 const App = () => {
 
   const [activities, setActivities] = useState([]);
+  const token = localStorage?.getItem("token");
   
   useEffect(() => {
     const fetchData = async () => {
-      const result = await fetch(`${process.env.REACT_APP_BACKEND_URL}/activities`);
+      const result = await fetch(
+        `${process.env.REACT_APP_BACKEND_URL}/activities`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       const data = await result.json();
       setActivities(data);
     };
-
     fetchData();
-  }, [])
+  }, [token]);
 
 
 
@@ -28,7 +35,8 @@ const App = () => {
     await fetch(`${process.env.REACT_APP_BACKEND_URL}/activity`, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`,
       },
       body: JSON.stringify(newActivity)
     });
