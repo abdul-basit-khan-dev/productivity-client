@@ -27,7 +27,6 @@ const Login = () => {
     );
 
     const data = await response.json();
-    debugger
     localStorage.setItem("token", data.token);
     window.location.reload();
   };
